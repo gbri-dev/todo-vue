@@ -2,8 +2,8 @@
 import { reactive } from 'vue';
 
 const estadoApp = reactive({
-  tarefaTemp: '',
   filtro: 'todas',
+  tarefaTemp: '',
   tarefas: [
     {
       titulo: 'Estudar ES6',
@@ -46,8 +46,9 @@ const cadastraTarefa = () => {
     titulo: estadoApp.tarefaTemp,
     finalizada: false
   }
-  estadoApp.tarefas.push(tarefaNova)
-  estadoApp.tarefaTemp = ''
+  estadoApp.tarefas.push(tarefaNova);
+  estadoApp.tarefaTemp = '';
+  document.querySelector('input').value = ''
 }
 </script>
 
@@ -59,22 +60,27 @@ const cadastraTarefa = () => {
         Você possui {{ getTarefasPendentes().length }} tarefas pendentes
       </p>
     </header>
+    
+      <div class="container-fluid mb-4">  
+        <div class="row justify-content-end">
+          <div class="col-2">
+          <select class="form-select" @change="evento => estadoApp.filtro = evento.target.value">
+            <option value="todas">Todas tarefas</option>
+            <option value="pendentes">Pendentes</option>
+            <option value="concluidas">Concluídas</option>
+          </select>    
+        </div>  
+        </div>            
+      </div>  
 
   <form @submit.prevent="cadastraTarefa">
     <div class="row">
       <div class="col-sm mb-4">
-        <input @value="evento.tarefaTemp" @change="evento => evento.tarefaTemp = evento.target.value" type="text" class="form-control" placeholder="Digite sua tarefa aqui...">
+        <input @value="estadoApp.tarefaTemp" @change="evento => estadoApp.tarefaTemp = evento.target.value" type="text" class="form-control" placeholder="Digite sua tarefa aqui..." required>
       </div>
-      <div class="col-sm-1 mb-4">
+      <div class="col-md-1 mb-4">
         <button  type="submit" class="btn btn-primary">Cadastrar</button>
-      </div>
-      <div class="col-sm-2">
-        <select class="form-control" @change="evento => estadoApp.filtro = evento.target.value">
-          <option value="todas">Todas tarefas</option>
-          <option value="pendentes">Pendentes</option>
-          <option value="concluidas">Concluídas</option>
-        </select>
-      </div>
+      </div>      
     </div>
   </form>
   <ul class="list-group mt-4">
